@@ -1,7 +1,7 @@
 import { Autocomplete, Box, Checkbox, FormControlLabel, TextField, Tooltip } from "@mui/material";
 import { Paint } from "../models/paint";
 import { PaintFilter } from "../models/filter";
-import { findSearchOptions } from "../utils/helper";
+import { findBrandOptions, findTagOptions, findTypeOptions } from "../utils/helper";
 
 type Props = {
   inventory: Paint[];
@@ -14,13 +14,17 @@ export function PaintFilters({
   filter,
   onChange,
 }: Props) {
-  const searchOptions = findSearchOptions(inventory);
+  const brandOptions = findBrandOptions(inventory);
+  const typeOptions = findTypeOptions(inventory);
+  const tagOptions = findTagOptions(inventory);
+
+  const searchOptions = brandOptions.concat(typeOptions).concat(tagOptions).sort();
 
   return (
-    <Box display="flex" minWidth={400} gap={2}>
-      <Tooltip title="Show duplicate named and zero amount paints">
+    <Box display="flex" minWidth={600} gap={1} mt={1}>
+      <Tooltip title="Show duplicate names and paints with zero amount">
         <FormControlLabel
-          sx={{ width: 200 }}
+          sx={{ minWidth: 128 }}
           label="Show None"
           control={
             <Checkbox
@@ -37,7 +41,22 @@ export function PaintFilters({
         value={filter.search}
         onInputChange={(_, value) => onChange({ ...filter, search: value || "" })}
         options={searchOptions}
-        renderInput={(params) => <TextField {...params} label="Search" />}
+        renderInput={(params) => <TextField {...params} label="Tag/Brand/Type" />}
+      />
+
+      <Autocomplete
+        fullWidth
+        value={inventory.find((x) => x.id === filter.similarId) || null}
+        onChange={(_, value) => onChange({ ...filter, similarId: value?.id || "" })}
+        options={inventory}
+        getOptionLabel={(option) => option.name}
+        renderOption={(props, option) => (
+          <li {...props} key={option.id}>
+            <Box sx={{ backgroundColor: option.colorHex, height: 20, width: 20, borderRadius: 1, mr: 1 }} />
+            {option.name}
+          </li>
+        )}
+        renderInput={(params) => <TextField {...params} label="Similar To" />}
       />
     </Box>
   )

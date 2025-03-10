@@ -9,7 +9,9 @@ import { PinnedList } from "./lists/PinnedList";
 import { InventoryList } from "./lists/InventoryList";
 
 export function HomePage() {
-  const [filter, setFilter] = useState<PaintFilter>({ search: "" , showZeros: false });
+  const [filter, setFilter] = useState<PaintFilter>({
+    search: "" , similarId: "", showZeros: false
+  });
 
   const initialInventory = useMemo(() => getInventory(), []);
   const [inventory, setInventory] = useState(initialInventory);
@@ -19,7 +21,7 @@ export function HomePage() {
   useEffect(() => {
     if (inventory === initialInventory) return;
     saveInventory(inventory);
-  }, [initialInventory, inventory])
+  }, [initialInventory, inventory]);
 
   return (
     <PageContainer>
@@ -37,9 +39,9 @@ export function HomePage() {
         />
       </Box>
 
-      <Divider sx={{ mt: 8, mb: 8 }} />
+      <Divider sx={{ mt: 6, mb: 6 }} />
 
-      <Grid2 container spacing={8} width="100%" flex={1} overflow="hidden">
+      <Grid2 container spacing={10} width="100%" flex={1} overflow="hidden">
         <InventoryList
           filter={filter}
           inventory={sortedInventory}

@@ -1,5 +1,5 @@
 import { Box, Button, Card, Divider, Grid2, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AddEditPaintDialog } from "../common/AddEditPaintDialog";
 import { ConfirmationDialog } from "../common/ConfirmationDialog";
 import { PaintEntry } from "../common/PaintEntry";
@@ -14,6 +14,7 @@ type Props = {
 }
 
 export function InventoryList({ filter, inventory, setInventory }: Props) {
+  const scrollBox = useRef<HTMLElement>();
   const [expanded, setExpanded] = useState<string>();
 
   const [openAddEdit, setOpenAddEdit] = useState(false);
@@ -23,6 +24,10 @@ export function InventoryList({ filter, inventory, setInventory }: Props) {
   const [deletingPaint, setDeletingPaint] = useState<Paint>();
 
   const filteredInventory = applyFilter(inventory, filter);
+  
+  useEffect(() => {
+    scrollBox.current?.scrollTo({ top: 0, behavior: "smooth" })
+  }, [filter]);
 
   return (
     <Grid2 size={6} display="flex" flexDirection="column" height="100%">
@@ -42,7 +47,10 @@ export function InventoryList({ filter, inventory, setInventory }: Props) {
         </Button>
       </Box>
 
-      <Box sx={{ mt: 2, pr: 2, pb: 1, flex: 1, overflow: "auto", scrollbarGutter: "stable" }}>
+      <Box
+        ref={scrollBox}
+        sx={{ mt: 4, pr: 2, pb: 1, flex: 1, overflow: "auto", scrollbarGutter: "stable" }}
+      >
         <Card>
           {filteredInventory.map((paint, index) => (
             <Box key={`${paint.id}-${index}`}>

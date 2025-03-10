@@ -41,7 +41,7 @@ export function PinnedList({ inventory, setInventory }: Props) {
         </Button>
       </Box>
 
-      <Box sx={{ mt: 2, pr: 2, pb: 1, flex: 1, overflow: "auto", scrollbarGutter: "stable" }}>
+      <Box sx={{ mt: 4, pr: 2, pb: 1, flex: 1, overflow: "auto", scrollbarGutter: "stable" }}>
         <Card>
           {pinnedInventory.map((paint, index) => (
             <Box key={`${paint.id}-${index}-pinned`}>

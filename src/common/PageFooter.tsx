@@ -17,7 +17,7 @@ export function PageFooter() {
   };
 
   return (
-    <Box p={2} display="flex" alignItems="center" flexDirection="column">
+    <Box mt={2} p={2} display="flex" alignItems="center" flexDirection="column" sx={{ opacity: 0.7 }}>
       <Box mb={1}>
         <Tooltip title="About this app" placement="top">
           <IconButton onClick={() => setOpenAbout(true)}>

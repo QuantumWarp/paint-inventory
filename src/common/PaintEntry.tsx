@@ -61,7 +61,7 @@ export function PaintEntry({ paint, expanded, onExpand, onUpdate, onEdit, onDele
         </ListItemIcon>
       </ListItemButton>
 
-      <Collapse in={expanded}>
+      <Collapse in={expanded} mountOnEnter unmountOnExit>
         <Box p={2} pt={1} display="flex" className="faded">
           <Box flex={1} px={2}>
             {paint.type && <Typography>Type: <b>{paint.type}</b></Typography>}
