@@ -16,7 +16,9 @@ export function HomePage() {
   const initialInventory = useMemo(() => getInventory(), []);
   const [inventory, setInventory] = useState(initialInventory);
 
-  const sortedInventory = inventory.sort((a, b) => a.name.localeCompare(b.name));
+  const sortedInventory = inventory.sort((a, b) =>
+    a.name.localeCompare(b.name) || a.type.localeCompare(b.type)
+  );
 
   useEffect(() => {
     if (inventory === initialInventory) return;

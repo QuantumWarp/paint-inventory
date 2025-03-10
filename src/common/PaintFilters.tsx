@@ -20,6 +20,10 @@ export function PaintFilters({
 
   const searchOptions = brandOptions.concat(typeOptions).concat(tagOptions).sort();
 
+  const similarToOptions = inventory.filter((x, index, arr) =>
+    arr.findIndex((el) => el.name === x.name && el.colorHex === x.colorHex) === index
+  )
+
   return (
     <Box display="flex" minWidth={600} gap={1} mt={1}>
       <Tooltip title="Show duplicate names and paints with zero amount">
@@ -41,14 +45,14 @@ export function PaintFilters({
         value={filter.search}
         onInputChange={(_, value) => onChange({ ...filter, search: value || "" })}
         options={searchOptions}
-        renderInput={(params) => <TextField {...params} label="Tag/Brand/Type" />}
+        renderInput={(params) => <TextField {...params} label="Search" />}
       />
 
       <Autocomplete
         fullWidth
         value={inventory.find((x) => x.id === filter.similarId) || null}
         onChange={(_, value) => onChange({ ...filter, similarId: value?.id || "" })}
-        options={inventory}
+        options={similarToOptions}
         getOptionLabel={(option) => option.name}
         renderOption={(props, option) => (
           <li {...props} key={option.id}>

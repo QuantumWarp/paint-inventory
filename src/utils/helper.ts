@@ -41,12 +41,14 @@ export function applyFilter(inventory: Paint[], filter: PaintFilter) {
 
   let filtered = inventory
     .filter((x) => filter.showZeros || x.amount > 0)
-    .filter((x, index, arr) => filter.showZeros || arr.findIndex((el) => el.name === x.name) === index)
     .filter((x) => !filter.search
       || x.name.toLowerCase().includes(filter.search.toLowerCase())
       || x.brand.toLowerCase().includes(filter.search.toLowerCase())
       || x.type.toLowerCase().includes(filter.search.toLowerCase())
       || x.tags.find((tag) => tag.toLowerCase().includes(filter.search.toLowerCase()))
+    )
+    .filter((x, index, arr) => filter.showZeros
+      || arr.findIndex((el) => el.name === x.name && el.colorHex === x.colorHex) === index
     );
 
   if (similarHex) {
