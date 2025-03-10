@@ -1,6 +1,7 @@
-import { PaintFilter } from "./models/filter";
-import { Paint } from "./models/paint";
-import { commonTypes } from "./models/types";
+import { PaintFilter } from "../models/filter";
+import { Paint } from "../models/paint";
+import { commonTypes } from "../models/types";
+
 
 export function findSearchOptions(inventory: Paint[]) {
   const brandOptions = findBrandOptions(inventory);
@@ -48,6 +49,7 @@ export function findNameOptions(inventory: Paint[]) {
 export function applyFilter(inventory: Paint[], filter: PaintFilter) {
   return inventory
     .filter((x) => filter.showZeros || x.amount > 0)
+    .filter((x, index, arr) => filter.showZeros || arr.findIndex((el) => el.name === x.name) === index)
     .filter((x) => !filter.search
       || x.name.toLowerCase().includes(filter.search.toLowerCase())
       || x.brand.toLowerCase().includes(filter.search.toLowerCase())

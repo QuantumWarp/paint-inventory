@@ -1,7 +1,7 @@
 import { Autocomplete, Box, Checkbox, FormControlLabel, TextField, Tooltip } from "@mui/material";
 import { Paint } from "../models/paint";
 import { PaintFilter } from "../models/filter";
-import { findSearchOptions } from "../helper";
+import { findSearchOptions } from "../utils/helper";
 
 type Props = {
   inventory: Paint[];
@@ -18,7 +18,7 @@ export function PaintFilters({
 
   return (
     <Box display="flex" minWidth={400} gap={2}>
-      <Tooltip title="By default paints with an amount of zero are not shown">
+      <Tooltip title="Show duplicate named and zero amount paints">
         <FormControlLabel
           sx={{ width: 200 }}
           label="Show None"

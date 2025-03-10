@@ -3,7 +3,7 @@ import { Paint } from "../models/paint";
 import { useEffect, useRef, useState } from "react";
 import { Brush } from "@mui/icons-material";
 import { v4 as uuid } from "uuid";
-import { findBrandOptions, findNameOptions, findTagOptions, findTypeOptions } from "../helper";
+import { findBrandOptions, findNameOptions, findTagOptions, findTypeOptions } from "../utils/helper";
 
 const createDefaultPaint = () => ({
   id: uuid(),
@@ -41,8 +41,14 @@ export function AddEditPaintDialog({ inventory, open, initialPaint, onSave, onCl
   };
 
   useEffect(() => {
-    if (!open) return;
-    setPaint(initialPaint || createDefaultPaint());
+    if (open) {
+      setPaint(initialPaint || createDefaultPaint());
+      if (colorPickerRef.current) {
+        colorPickerRef.current.defaultValue = initialPaint?.colorHex || "#000000";
+      }
+    } else {
+      setTimeout(() => { setPaint(createDefaultPaint()); }, 200);
+    }
   }, [initialPaint, open]);
   
   const brandOptions = findBrandOptions(inventory);
@@ -55,7 +61,7 @@ export function AddEditPaintDialog({ inventory, open, initialPaint, onSave, onCl
       .map((x) => x.toLowerCase().trim())
       .includes(paint.name.toLowerCase().trim());
 
-  const isValid = paint.name.trim() && paint.colorHex.trim() && !isExisting;
+  const isValid = paint.name.trim() && paint.colorHex.trim();
 
   return (
     <Dialog open={open} fullWidth>
@@ -69,6 +75,7 @@ export function AddEditPaintDialog({ inventory, open, initialPaint, onSave, onCl
             style={{ visibility: "hidden", position: "absolute" }}
             ref={colorPickerRef}
             type="color"
+            defaultValue={initialPaint?.colorHex || "#ffffff"}
             onChange={(e) => handleColorChange(e.target.value)}
           />
 
@@ -87,7 +94,7 @@ export function AddEditPaintDialog({ inventory, open, initialPaint, onSave, onCl
               label="Name"
               required
               fullWidth
-              error={isExisting}
+              color={isExisting ? "warning" : undefined}
               helperText={isExisting ? "Name already exists" : undefined}
               value={paint.name}
               onChange={(x) => setPaint({ ...paint, name: x.target.value })}

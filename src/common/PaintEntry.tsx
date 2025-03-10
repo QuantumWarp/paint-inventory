@@ -1,18 +1,18 @@
 import { Box, Chip, Collapse, IconButton, ListItemButton, ListItemIcon, ListItemText, Tooltip, Typography } from "@mui/material";
 import { Paint } from "../models/paint"
 import { Add, Delete, Edit, HelpOutline, KeyboardArrowDown, PushPin, Remove } from "@mui/icons-material";
-import { useState } from "react";
 import { commonTypes } from "../models/types";
 
 type Props = {
   paint: Paint;
+  expanded: boolean;
+  onExpand: (expanded: boolean) => void;
   onUpdate: (paint: Paint) => void;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-export function PaintEntry({ paint, onUpdate, onEdit, onDelete }: Props) {
-  const [expanded, setExpanded] = useState(false);
+export function PaintEntry({ paint, expanded, onExpand, onUpdate, onEdit, onDelete }: Props) {
   const typeIcon = commonTypes[paint.type] || <HelpOutline />
 
   return (
@@ -48,7 +48,7 @@ export function PaintEntry({ paint, onUpdate, onEdit, onDelete }: Props) {
             className="faded"
             onClick={(e) => {
               e.stopPropagation();
-              setExpanded(!expanded);
+              onExpand(!expanded);
             }}
           >
             <KeyboardArrowDown
